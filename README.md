@@ -241,7 +241,8 @@ VALUES (1, 1, 123456789),
 -- Insertar datos en la tabla ciudad
 INSERT INTO ciudad (id_ciudad, nombre_ciudad)
 VALUES (1, 'Ciudad A'),
-       (2, 'Ciudad B');
+       (2, 'Ciudad B'),
+       (3, 'Madrid');
 
 -- Insertar datos en la tabla region
 INSERT INTO region (id_region, nombre_region)
@@ -276,12 +277,14 @@ VALUES (1, '123456789', 1, 1, 1),
 -- Insertar datos en la tabla puesto
 INSERT INTO puesto (id_puesto, puesto)
 VALUES (1, 'Puesto 1'),
-       (2, 'Puesto 2');
+       (2, 'Puesto 2'),
+       (3, 'Jefe');
 
 -- Insertar datos en la tabla empleado
 INSERT INTO empleado (id_empleado, nombre_empleado, apellido1_empleado, apellido2_empleado, extension_empleado, email_empleado, oficina_empleado, puesto_empleado, jefe_empleado)
 VALUES (1, 'Empleado 1', 'Apellido 1', 'Apellido 2', 'Extensión 1', 'empleado1@example.com', 1, 1, 7),
-       (2, 'Empleado 2', 'Apellido 3', 'Apellido 4', 'Extensión 2', 'empleado2@example.com', 2, 2, 8);
+       (2, 'Empleado 2', 'Apellido 3', 'Apellido 4', 'Extensión 2', 'empleado2@example.com', 2, 2, 8),
+       (3, 'Empleado 3', 'Apellido 1', 'Apellido 2', 'Extensión 3', 'jefe@example.com', 2, 3, 7);
 
 -- Insertar datos en la tabla cliente
 INSERT INTO cliente (id_cliente, nombre_cliente, apellido1_cliente, apellido2_cliente, contacto_cliente, telefono_cliente, fax_cliente, direccion_cliente, ciudad_cliente, codigo_postal_cliente, empleado_cliente)
