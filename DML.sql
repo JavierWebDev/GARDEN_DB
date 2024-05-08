@@ -102,6 +102,23 @@ VALUES (1, 'Pago 1'),
        (2, 'Pago 2');
 
 -- Insertar datos en la tabla pago
-INSERT INTO pago (id_pago, transaccion, forma_pago_pago, fecha_pago)
-VALUES (1, 123456, 1, '2024-05-07'),
-       (2, 789012, 2, '2024-05-06');
+INSERT INTO pago (id_pago, transaccion, forma_pago_pago, fecha_pago, pago_cliente)
+VALUES (1, 123456, 1, '2024-05-07', 1),
+       (2, 789012, 2, '2024-05-06', 2),
+       (3, 789012, 2, '2008-05-06', 1);
+
+-- Insertar datos en la tabla estado
+INSERT INTO estado (id_estado, estado)
+VALUES (1, 'En proceso'),
+       (2, 'En camino'),
+       (3, 'Entregado');
+
+-- Insertar datos en la tabla detallePedido
+INSERT INTO detallePedido (id_detallePedido, producto_pedido, cantidad, precio_unidad, numeroLinea)
+VALUES (1, 'P001', 2, 50.99, 'NL001'),
+       (2, 'P002', 1, 35.75, 'NL002');
+
+-- Insertar datos en la tabla pedido
+INSERT INTO pedido (id_pedido, fecha_pedido, fecha_esperada, fecha_entrega, comentarios, detalle_pedido, estado_pedido)
+VALUES (1, '2024-05-07', '2024-05-10', NULL, 'Comentario 1', 1, 1),
+       (2, '2024-05-06', '2024-05-09', NULL, 'Comentario 2', 2, 2);

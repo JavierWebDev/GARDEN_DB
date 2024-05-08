@@ -179,6 +179,35 @@ create table pago(
   id_pago int(11) primary key,
   transaccion int(11) not null,
   forma_pago_pago int(11) not null,
+  pago_cliente int(11) not null,
   fecha_pago DATE not null,
-    constraint FK_forma_pago foreign key (forma_pago_pago) references forma_pago(id_forma_pago)
+    constraint FK_forma_pago foreign key (forma_pago_pago) references forma_pago(id_forma_pago),
+    constraint FK_cliente_pago foreign key (pago_cliente) references cliente(id_cliente)
+);
+
+-- Tabla para los pedidos
+
+create table estado(
+  id_estado int(11) primary key,
+  estado varchar(50) not null
+);
+
+create table detallePedido(
+  id_detallePedido int(11) primary key,
+  producto_pedido varchar(50) not null,
+  cantidad int(2) not null,
+  precio_unidad float(5,2) not null,
+  numeroLinea varchar(20),
+  constraint FK_productoDetalle foreign key (producto_pedido) references producto(id_producto)
+);
+
+create table pedido(
+ id_pedido int(11) primary key,
+ fecha_pedido date,
+ fecha_esperada date,
+ fecha_entrega date,
+ comentarios text,
+ detalle_pedido int(11) not null,
+ estado_pedido int(11) not null,
+  constraint FK_estado_pedido foreign key  (estado_pedido) references estado(id_estado)
 );

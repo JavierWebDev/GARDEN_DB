@@ -85,4 +85,65 @@ WHERE pais.id_pais = 1;
 +---------------------------------+-------------+
 ```
 
-7. 
+7. Devuelve un listado con los distintos estados por los que puede pasar un pedido.
+
+```sql
+SELECT id_estado, estado
+FROM estado;
++-----------+------------+
+| id_estado | estado     |
++-----------+------------+
+|         1 | En proceso |
+|         2 | En camino  |
+|         3 | Entregado  |
++-----------+------------+
+```
+
+8. Devuelve un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. Resuelva la consulta:
+   • Utilizando la función YEAR de MySQL.
+
+```sql
+SELECT id_cliente
+FROM cliente
+JOIN pago ON id_cliente = pago.pago_cliente
+WHERE YEAR(pago.fecha_pago) = 2008;
++------------+
+| id_cliente |
++------------+
+|          1 |
++------------+
+```
+
+​	• Utilizando la función DATE_FORMAT de MySQL.
+
+```sql
+SELECT id_cliente
+FROM cliente
+JOIN pago ON id_cliente = pago.pago_cliente
+WHERE DATE_FORMAT(pago.fecha_pago,'%Y') = 2008;
++------------+
+| id_cliente |
++------------+
+|          1 |
++------------+
+```
+
+​	• Sin utilizar ninguna de las funciones anteriores.
+
+```sql
+SELECT id_cliente
+FROM cliente
+JOIN pago ON id_cliente = pago.pago_cliente
+WHERE pago.fecha_pago BETWEEN '2008-01-01' AND '2008-12-31';
++------------+
+| id_cliente |
++------------+
+|          1 |
++------------+
+```
+
+9. Devuelve un listado con el código de pedido, código de cliente, fecha  esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.
+
+```sql
+
+```
