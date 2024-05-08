@@ -139,7 +139,7 @@ create table empleado(
   email_empleado varchar(50) not null,
   oficina_empleado int(11) not null,
   puesto_empleado int(11) not null,
-  jefe_empleado int(11) not null,
+  jefe_empleado int(11),
     constraint FK_oficina_empleado foreign key (oficina_empleado) references oficina(id_oficina),
     constraint FK_puesto_empleado foreign key (puesto_empleado) references puesto(id_puesto)
 );
@@ -156,6 +156,7 @@ create table cliente(
   direccion_cliente int(11) not null,
   ciudad_cliente int(11) not null,
   codigo_postal_cliente int(11) not null,
+  pais_cliente int(11) not null,
   empleado_cliente int(11) not null,
     constraint FK_contacto_cliente foreign key (contacto_cliente) references contacto(id_contacto),
     constraint FK_telefono_cliente foreign key (telefono_cliente) references telefono(id_telefono),
@@ -163,6 +164,7 @@ create table cliente(
     constraint FK_direccion_cliente foreign key (direccion_cliente) references direccion(id_direccion),
     constraint FK_ciudad_cliente foreign key (ciudad_cliente) references ciudad(id_ciudad),
     constraint FK_codpostal_cliente foreign key (codigo_postal_cliente) references codigo_postal(id_codigo_postal),
+    constraint FK_pais_cliente foreign key (pais_cliente) references pais(id_pais),
     constraint FK_empleado_cliente foreign key (empleado_cliente) references empleado(id_empleado)
 );
 

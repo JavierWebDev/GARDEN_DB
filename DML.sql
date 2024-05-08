@@ -82,19 +82,19 @@ VALUES (1, '123456789', 1, 1, 1),
 -- Insertar datos en la tabla puesto
 INSERT INTO puesto (id_puesto, puesto)
 VALUES (1, 'Puesto 1'),
-       (2, 'Puesto 2'),
+       (2, 'Rep Ventas'),
        (3, 'Jefe');
 
 -- Insertar datos en la tabla empleado
 INSERT INTO empleado (id_empleado, nombre_empleado, apellido1_empleado, apellido2_empleado, extension_empleado, email_empleado, oficina_empleado, puesto_empleado, jefe_empleado)
 VALUES (1, 'Empleado 1', 'Apellido 1', 'Apellido 2', 'Extensión 1', 'empleado1@example.com', 1, 1, 7),
        (2, 'Empleado 2', 'Apellido 3', 'Apellido 4', 'Extensión 2', 'empleado2@example.com', 2, 2, 8),
-       (3, 'Empleado 3', 'Apellido 1', 'Apellido 2', 'Extensión 3', 'jefe@example.com', 2, 3, 7);
+       (3, 'JEFEEEEE', 'Apellido 1', 'Apellido 2', 'Extensión 3', 'jefe@example.com', 2, 3, null);
 
 -- Insertar datos en la tabla cliente
-INSERT INTO cliente (id_cliente, nombre_cliente, apellido1_cliente, apellido2_cliente, contacto_cliente, telefono_cliente, fax_cliente, direccion_cliente, ciudad_cliente, codigo_postal_cliente, empleado_cliente)
-VALUES (1, 'Cliente 1', 'Apellido 5', 'Apellido 6', 1, 1, 1, 1, 1, 1, 1),
-       (2, 'Cliente 2', 'Apellido 7', 'Apellido 8', 2, 2, 2, 2, 2, 2, 2);
+INSERT INTO cliente (id_cliente, nombre_cliente, apellido1_cliente, apellido2_cliente, contacto_cliente, telefono_cliente, fax_cliente, direccion_cliente, ciudad_cliente, codigo_postal_cliente, pais_cliente, empleado_cliente)
+VALUES (1, 'Cliente 1', 'Apellido 5', 'Apellido 6', 1, 1, 1, 1, 1, 1, 2, 1),
+       (2, 'Cliente 2', 'Apellido 7', 'Apellido 8', 2, 2, 2, 2, 2, 2, 1, 2);
 
 -- Insertar datos en la tabla forma_pago
 INSERT INTO forma_pago (id_forma_pago, nombre_forma_pago)
@@ -105,4 +105,3 @@ VALUES (1, 'Pago 1'),
 INSERT INTO pago (id_pago, transaccion, forma_pago_pago, fecha_pago)
 VALUES (1, 123456, 1, '2024-05-07'),
        (2, 789012, 2, '2024-05-06');
-
