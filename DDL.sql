@@ -208,6 +208,9 @@ create table pedido(
  fecha_entrega date,
  comentarios text,
  detalle_pedido int(11) not null,
+ cliente_pedido int(11) not null,
  estado_pedido int(11) not null,
-  constraint FK_estado_pedido foreign key  (estado_pedido) references estado(id_estado)
+  constraint FK_estado_pedido foreign key  (estado_pedido) references estado(id_estado),
+  constraint FK_cliente_pedido foreign key  (cliente_pedido) references cliente(id_cliente)
 );
+

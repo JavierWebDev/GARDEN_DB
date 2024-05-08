@@ -142,8 +142,111 @@ WHERE pago.fecha_pago BETWEEN '2008-01-01' AND '2008-12-31';
 +------------+
 ```
 
-9. Devuelve un listado con el código de pedido, código de cliente, fecha  esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.
+9. Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos que no han sido entregados a tiempo.
 
 ```sql
-
+select id_pedido, cliente_pedido, fecha_esperada, fecha_entrega
+from pedido
+where fecha_entrega > fecha_esperada;
++-----------+----------------+----------------+---------------+
+| id_pedido | cliente_pedido | fecha_esperada | fecha_entrega |
++-----------+----------------+----------------+---------------+
+|         3 |              2 | 2024-05-09     | 2024-05-10    |
++-----------+----------------+----------------+---------------+
 ```
+
+10. Devuelve un listado con el código de pedido, código de cliente, fecha  esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.
+    - Utilizando la función ADDDATE de MySQL.
+
+```sql
+SELECT id_pedido, cliente_pedido, fecha_esperada, fecha_entrega
+FROM pedido
+WHERE fecha_entrega < ADDDATE(fecha_esperada, -2);
+```
+
+- Utilizando la función DATEDIFF de MySQL.
+
+```sql
+SELECT id_pedido, cliente_pedido, fecha_esperada, fecha_entrega
+FROM pedido
+WHERE DATEDIFF(fecha_esperada, fecha_entrega) >= 2;
+```
+
+11. Devuelve un listado de todos los pedidos que fueron rechazados en 2009.
+
+    ```sql
+    SELECT id_pedido
+    FROM pedido
+    WHERE estado_pedido = 4 AND DATE_FORMAT(fecha_pedido, '%Y') = 2009;
+    +-----------+
+    | id_pedido |
+    +-----------+
+    |         5 |
+    +-----------+
+    ```
+
+12. Devuelve un listado de todos los pedidos que han sido entregados en el mes de enero de cualquier año.
+
+```sql
+SELECT id_pedido
+FROM pedido
+WHERE DATE_FORMAT(fecha_pedido, '%M') = 'January';
++-----------+
+| id_pedido |
++-----------+
+|         1 |
+|         2 |
++-----------+
+```
+
+13. Devuelve un listado con todos los pagos que se realizaron en el año 2008 mediante Paypal. Ordene el resultado de mayor a menor.
+
+```sql
+SELECT p.id_pago AS ID, fecha_pago, forma_pago.nombre_forma_pago 
+FROM pago as p
+JOIN forma_pago ON forma_pago_pago = forma_pago.id_forma_pago
+WHERE DATE_FORMAT(fecha_pago, '%Y') = 2008 AND forma_pago.id_forma_pago = 2
+ORDER BY fecha_pago DESC;
++----+------------+-------------------+
+| ID | fecha_pago | nombre_forma_pago |
++----+------------+-------------------+
+|  3 | 2008-05-06 | PayPal            |
++----+------------+-------------------+
+```
+
+14. Devuelve un listado con todas las formas de pago que aparecen en la tabla pago. Tenga en cuenta que no deben aparecer formas de pago repetidas.
+
+```sql
+SELECT DISTINCT(id_forma_pago), nombre_forma_pago
+FROM forma_pago;
++---------------+-------------------+
+| id_forma_pago | nombre_forma_pago |
++---------------+-------------------+
+|             1 | Pago 1            |
+|             2 | PayPal            |
++---------------+-------------------+
+```
+
+15. Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales y que tienen más de 100 unidades en stock. El listado deberá estar ordenado por su precio de venta, mostrando en primer lugar los de mayor precio.
+
+```sql
+SELECT id_producto, nombre_producto, precio_ventas
+FROM producto
+JOIN stock ON stock_producto = id_stock
+WHERE gama_producto = 'G002' AND stock.stock > 100 
+ORDER BY precio_ventas DESC;
++-------------+-----------------+---------------+
+| id_producto | nombre_producto | precio_ventas |
++-------------+-----------------+---------------+
+| P002        | Producto 2      |         69.99 |
++-------------+-----------------+---------------+
+```
+
+16. Devuelve un listado con todos los clientes que sean de la ciudad de Madrid y cuyo representante de ventas tenga el código de empleado 11 o 30.
+
+```sql
+SELECT id_cliente, ciudad_cliente 
+FROM cliente
+WHERE ciudad_cliente = 'Madrid' AND empleado_cliente IN (11,30);
+```
+
