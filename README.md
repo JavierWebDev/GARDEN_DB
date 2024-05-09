@@ -250,3 +250,369 @@ FROM cliente
 WHERE ciudad_cliente = 'Madrid' AND empleado_cliente IN (11,30);
 ```
 
+---
+
+## Consultas Multitabla (Composicion Interna)
+
+Resuelva todas las consultas utilizando la sintaxis de SQL1 y SQL2. Las consultas con sintaxis de SQL2 se deben resolver con INNER JOIN y NATURAL JOIN.
+
+1. Obtén un listado con el nombre de cada cliente y el nombre y apellido de su representante de ventas.
+
+```sql
+SELECT c.id_cliente, CONCAT(c.nombre_cliente, ' ', c.apellido1_cliente, ' ', c.apellido2_cliente) AS nombreCliente, empleado.id_empleado,CONCAT(empleado.nombre_empleado, ' ', empleado.apellido1_empleado, ' ', empleado.apellido2_empleado) AS nombreEmpleado
+FROM cliente AS c
+INNER JOIN empleado ON c.empleado_cliente = empleado.id_empleado;
++------------+---------------------------------+-------------+----------------------------------+
+| id_cliente | nombreCliente                   | id_empleado | nombreEmpleado                   |
++------------+---------------------------------+-------------+----------------------------------+
+|          1 | Cliente 1 Apellido 5 Apellido 6 |           1 | Empleado 1 Apellido 1 Apellido 2 |
+|          2 | Cliente 2 Apellido 7 Apellido 8 |           2 | Empleado 2 Apellido 3 Apellido 4 |
++------------+---------------------------------+-------------+----------------------------------+
+```
+
+2. Muestra el nombre de los clientes que hayan realizado pagos junto con el nombre de sus representantes de ventas.
+
+```sql
+SELECT id_pago, CONCAT(cliente.nombre_cliente, ' ', cliente.apellido1_cliente, ' ', cliente.apellido2_cliente) AS nombreCliente, empleado.id_empleado,CONCAT(empleado.nombre_empleado, ' ', empleado.apellido1_empleado, ' ', empleado.apellido2_empleado) AS nombreEmpleado
+FROM pago
+INNER JOIN cliente ON pago.pago_cliente = cliente.id_cliente
+INNER JOIN empleado ON cliente.empleado_cliente = empleado.id_empleado;
++---------+---------------------------------+-------------+----------------------------------+
+| id_pago | nombreCliente                   | id_empleado | nombreEmpleado                   |
++---------+---------------------------------+-------------+----------------------------------+
+|       1 | Cliente 1 Apellido 5 Apellido 6 |           1 | Empleado 1 Apellido 1 Apellido 2 |
+|       3 | Cliente 1 Apellido 5 Apellido 6 |           1 | Empleado 1 Apellido 1 Apellido 2 |
+|       2 | Cliente 2 Apellido 7 Apellido 8 |           2 | Empleado 2 Apellido 3 Apellido 4 |
++---------+---------------------------------+-------------+----------------------------------+
+```
+
+3. Devuelve el nombre de los clientes que han hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
+
+```sql
+SELECT CONCAT(cliente.nombre_cliente, ' ', cliente.apellido1_cliente, ' ', cliente.apellido2_cliente) AS nombreCliente, CONCAT(empleado.nombre_empleado, ' ', empleado.apellido1_empleado, ' ', empleado.apellido2_empleado) AS nombreEmpleado, ciudad.nombre_ciudad
+FROM cliente
+JOIN empleado ON cliente.empleado_cliente = empleado.id_empleado
+JOIN oficina ON empleado.oficina_empleado = oficina.id_oficina
+JOIN ciudad ON oficina.ciudad_oficina = ciudad.id_ciudad;
++---------------------------------+----------------------------------+---------------+
+| nombreCliente                   | nombreEmpleado                   | nombre_ciudad |
++---------------------------------+----------------------------------+---------------+
+| Cliente 1 Apellido 5 Apellido 6 | Empleado 1 Apellido 1 Apellido 2 | Ciudad A      |
+| Cliente 2 Apellido 7 Apellido 8 | Empleado 2 Apellido 3 Apellido 4 | Ciudad B      |
++---------------------------------+----------------------------------+---------------+
+```
+
+4. Lista la dirección de las oficinas que tengan clientes en Fuenlabrada.
+
+```sql
+SELECT CONCAT(direccion.calle, ' #', direccion.numero, ', ', barrio.nombre_barrio) AS direccionOficinaFuenlabrada
+FROM oficina
+JOIN direccion ON oficina.direccion_oficina = direccion.id_direccion
+JOIN barrio ON direccion.barrio = barrio.id_barrio
+JOIN ciudad ON oficina.ciudad_oficina = ciudad.id_ciudad
+WHERE ciudad.nombre_ciudad = 'Fuenlabrada';
++-----------------------------+
+| direccionOficinaFuenlabrada |
++-----------------------------+
+| Calle B #456, Barrio B      |
++-----------------------------+
+```
+
+5. Devuelve el nombre de los clientes y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
+
+```sql
+SELECT CONCAT(cliente.nombre_cliente, ' ', cliente.apellido1_cliente, ' ', cliente.apellido2_cliente) AS nombreCliente, CONCAT(empleado.nombre_empleado, ' ', empleado.apellido1_empleado, ' ', empleado.apellido2_empleado) AS nombreEmpleado, ciudad.nombre_ciudad AS ciudadRepresentante 
+FROM cliente
+JOIN empleado ON cliente.empleado_cliente = empleado.id_empleado
+JOIN oficina ON empleado.oficina_empleado = oficina.id_oficina
+JOIN ciudad ON oficina.ciudad_oficina = ciudad.id_ciudad;
++---------------------------------+----------------------------------+---------------------+
+| nombreCliente                   | nombreEmpleado                   | ciudadRepresentante |
++---------------------------------+----------------------------------+---------------------+
+| Cliente 1 Apellido 5 Apellido 6 | Empleado 1 Apellido 1 Apellido 2 | Ciudad A            |
+| Cliente 2 Apellido 7 Apellido 8 | Empleado 2 Apellido 3 Apellido 4 | Ciudad B            |
++---------------------------------+----------------------------------+---------------------+
+```
+
+6. Devuelve el nombre de los clientes a los que no se les ha entregado a tiempo un pedido.
+
+```sql
+SELECT CONCAT(cliente.nombre_cliente, ' ', cliente.apellido1_cliente, ' ', cliente.apellido2_cliente) AS nombreCliente ,fecha_esperada, fecha_entrega
+FROM pedido
+JOIN cliente ON pedido.cliente_pedido = cliente.id_cliente
+WHERE fecha_entrega > fecha_esperada;
++---------------------------------+----------------+---------------+
+| nombreCliente                   | fecha_esperada | fecha_entrega |
++---------------------------------+----------------+---------------+
+| Cliente 2 Apellido 7 Apellido 8 | 2024-05-09     | 2024-05-10    |
++---------------------------------+----------------+---------------+
+```
+
+7. Devuelve un listado de las diferentes gamas de producto que ha comprado cada cliente.
+
+```sql
+SELECT gama_producto.descripcion
+FROM pedido
+JOIN detallePedido ON pedido.detalle_pedido = detallePedido.id_detallePedido
+JOIN producto ON detallePedido.producto_pedido = producto.id_producto
+JOIN gama_producto ON producto.gama_producto = id_gama;
++--------------+
+| descripcion  |
++--------------+
+| Gama 1       |
+| Ornamentales |
+| Ornamentales |
+| Ornamentales |
+| Ornamentales |
++--------------+
+```
+
+---
+
+## Consultas multitabla (Composición Externa)
+
+Resuelva todas las consultas utilizando las cláusulas LEFT JOIN, RIGHT JOIN, NATURAL LEFT JOIN y NATURAL RIGHT JOIN.
+
+1. Devuelve un listado que muestre solamente los clientes que no han realizado ningún pago.
+
+```sql
+SELECT pago.pago_cliente, cliente.id_cliente, CONCAT(cliente.nombre_cliente, ' ', cliente.apellido1_cliente, ' ', cliente.apellido2_cliente) AS nombreCliente
+FROM pago
+LEFT JOIN cliente ON pago.pago_cliente = cliente.id_cliente
+WHERE pago.pago_cliente IS NULL;
+```
+
+2. Devuelve un listado que muestre solamente los clientes que no han realizado ningún pedido.
+
+```sql
+SELECT pedido.cliente_pedido, cliente.id_cliente, CONCAT(cliente.nombre_cliente, ' ', cliente.apellido1_cliente, ' ', cliente.apellido2_cliente) AS nombreCliente
+FROM pedido
+LEFT JOIN cliente ON pedido.cliente_pedido = cliente.id_cliente
+WHERE pedido.cliente_pedido IS NULL;
+```
+
+---
+
+## Consultas Resumen
+
+1. ¿Cuántos empleados hay en la compañía?
+
+```sql
+SELECT COUNT(id_empleado) AS numeroEmpleados
+FROM empleado;
++-----------------+
+| numeroEmpleados |
++-----------------+
+|               4 |
++-----------------+
+```
+
+2. ¿Cuántos clientes tiene cada país?
+
+```sql
+SELECT pais.nombre_pais, COUNT(cliente.id_cliente) AS numClientes
+FROM pais
+LEFT JOIN cliente ON cliente.pais_cliente = pais.id_pais
+GROUP BY pais.nombre_pais;
++-------------+-------------+
+| nombre_pais | numClientes |
++-------------+-------------+
+| España      |           1 |
+| Francia     |           1 |
++-------------+-------------+
+```
+
+3. ¿Cuál fue el pago medio en 2009?
+
+```sql
+SELECT AVG(transaccion) AS media2009
+FROM pago
+WHERE DATE_FORMAT(fecha_pago, '%Y') = 2009;
++-------------+
+| media2009   |
++-------------+
+| 789012.0000 |
++-------------+
+```
+
+4. ¿Cuántos pedidos hay en cada estado? Ordena el resultado de forma descendente por el número de pedidos.
+
+```sql
+SELECT estado.estado, COUNT(pedido.id_pedido) AS num_pedidos
+FROM estado
+LEFT JOIN pedido ON estado.id_estado = pedido.estado_pedido
+GROUP BY estado.estado
+ORDER BY num_pedidos DESC;
++------------+-------------+
+| estado     | num_pedidos |
++------------+-------------+
+| En camino  |           3 |
+| Rechazado  |           2 |
+| En proceso |           1 |
+| Entregado  |           0 |
++------------+-------------+
+```
+
+5. Calcula el precio de venta del producto más caro y más barato en una misma consulta.
+
+```sql
+SELECT MAX(precio_ventas) AS productoMasCaro, MIN(precio_ventas) AS productoMasBarato
+FROM producto;
++-----------------+-------------------+
+| productoMasCaro | productoMasBarato |
++-----------------+-------------------+
+|           89.99 |             69.99 |
++-----------------+-------------------+
+```
+
+6. Calcula el número de clientes que tiene la empresa.
+
+```sql
+SELECT COUNT(id_cliente) AS numClientes 
+FROM cliente;
++-------------+
+| numClientes |
++-------------+
+|           2 |
++-------------+
+```
+
+7. ¿Cuántos clientes existen con domicilio en la ciudad de Madrid?
+
+```sql
+SELECT COUNT(cliente.id_cliente) AS numClientesMadrid
+FROM cliente
+LEFT JOIN ciudad ON cliente.ciudad_cliente = ciudad.id_ciudad
+WHERE ciudad.nombre_ciudad = 'Madrid';
++-------------------+
+| numClientesMadrid |
++-------------------+
+|                 1 |
++-------------------+
+```
+
+8. ¿Calcula cuántos clientes tiene cada una de las ciudades que empiezan por M?
+
+```sql
+SELECT COUNT(cliente.id_cliente) AS numClientesM
+FROM cliente
+LEFT JOIN ciudad ON cliente.ciudad_cliente = ciudad.id_ciudad
+WHERE ciudad.nombre_ciudad LIKE 'M%';
++--------------+
+| numClientesM |
++--------------+
+|            1 |
++--------------+
+```
+
+9. Devuelve el nombre de los representantes de ventas y el número de clientes al que atiende cada uno.
+
+```sql
+SELECT CONCAT(empleado.nombre_empleado, ' ', empleado.apellido1_empleado, ' ', empleado.apellido2_empleado) AS nombreEmpleado, COUNT(cliente.id_cliente) AS numClientes
+FROM cliente
+LEFT JOIN empleado ON cliente.empleado_cliente = empleado.id_empleado
+GROUP BY cliente.empleado_cliente;
++----------------------------------+-------------+
+| nombreEmpleado                   | numClientes |
++----------------------------------+-------------+
+| Empleado 1 Apellido 1 Apellido 2 |           1 |
+| Empleado 2 Apellido 3 Apellido 4 |           1 |
+| Juan Lopez Gomez                 |           1 |
++----------------------------------+-------------+
+```
+
+10. Calcula el número de clientes que no tiene asignado representante de ventas.
+
+```sql
+SELECT COUNT(id_cliente) AS NoRepVentas
+FROM cliente
+WHERE empleado_cliente IS null;
++-------------+
+| NoRepVentas |
++-------------+
+|           1 |
++-------------+
+```
+
+---
+
+## Subconsultas
+
+### Con operadores básicos de comparación
+
+1. Devuelve el nombre del cliente con mayor límite de crédito.
+
+```sql
+SELECT nombre_cliente
+FROM cliente
+WHERE id_cliente = (
+    SELECT pago_cliente
+    FROM pago
+    WHERE transaccion = (
+        SELECT MAX(transaccion)
+        FROM pago
+    )
+);
++----------------+
+| nombre_cliente |
++----------------+
+| Cliente 1      |
++----------------+
+```
+
+2. Devuelve el nombre del producto que tenga el precio de venta más caro.
+
+```sql
+SELECT nombre_producto
+FROM producto
+WHERE precio_ventas = (
+  SELECT MAX(precio_ventas) AS PrecioMasCaro
+  FROM producto
+);
++-----------------+
+| nombre_producto |
++-----------------+
+| Producto 1      |
++-----------------+
+```
+
+3. Devuelve el producto que más unidades tiene en stock.
+
+```sql
+SELECT nombre_producto
+FROM producto
+WHERE stock_producto = (
+    SELECT id_stock
+    FROM stock
+    WHERE stock = (
+        SELECT MAX(stock)
+        FROM stock
+    )
+);
++-----------------+
+| nombre_producto |
++-----------------+
+| Producto 2      |
++-----------------+
+```
+
+4. Devuelve el producto que menos unidades tiene en stock.
+
+```sql
+SELECT nombre_producto
+FROM producto
+WHERE stock_producto = (
+    SELECT id_stock
+    FROM stock
+    WHERE stock = (
+        SELECT MIN(stock)
+        FROM stock
+    )
+);
++-----------------+
+| nombre_producto |
++-----------------+
+| Producto 1      |
++-----------------+
+```
+

@@ -118,9 +118,11 @@ create table oficina(
   ciudad_oficina int(11) not null,
   pais_oficina int(11) not null,
   codigo_postal_oficina int(11) not null,
+  direccion_oficina int(11) not null,
     constraint FK_ciudad_oficina foreign key (ciudad_oficina) references ciudad(id_ciudad),
     constraint FK_pais_oficina foreign key (pais_oficina) references pais(id_pais),
-    constraint FK_codpostal_oficina foreign key (codigo_postal_oficina) references codigo_postal(id_codigo_postal)
+    constraint FK_codpostal_oficina foreign key (codigo_postal_oficina) references codigo_postal(id_codigo_postal),
+    constraint FK_direccion_oficina foreign key (direccion_oficina) references direccion(id_direccion)
 );
 
 -- Tabla para tipos de puestos
@@ -157,7 +159,7 @@ create table cliente(
   ciudad_cliente int(11) not null,
   codigo_postal_cliente int(11) not null,
   pais_cliente int(11) not null,
-  empleado_cliente int(11) not null,
+  empleado_cliente int(11),
     constraint FK_contacto_cliente foreign key (contacto_cliente) references contacto(id_contacto),
     constraint FK_telefono_cliente foreign key (telefono_cliente) references telefono(id_telefono),
     constraint FK_fax foreign key (fax_cliente) references fax(id_fax),
@@ -179,8 +181,8 @@ create table pago(
   id_pago int(11) primary key,
   transaccion int(11) not null,
   forma_pago_pago int(11) not null,
-  pago_cliente int(11) not null,
   fecha_pago DATE not null,
+  pago_cliente int(11),
     constraint FK_forma_pago foreign key (forma_pago_pago) references forma_pago(id_forma_pago),
     constraint FK_cliente_pago foreign key (pago_cliente) references cliente(id_cliente)
 );
@@ -208,9 +210,8 @@ create table pedido(
  fecha_entrega date,
  comentarios text,
  detalle_pedido int(11) not null,
- cliente_pedido int(11) not null,
+ cliente_pedido int(11),
  estado_pedido int(11) not null,
   constraint FK_estado_pedido foreign key  (estado_pedido) references estado(id_estado),
   constraint FK_cliente_pedido foreign key  (cliente_pedido) references cliente(id_cliente)
 );
-
