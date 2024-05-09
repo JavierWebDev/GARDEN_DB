@@ -534,6 +534,112 @@ WHERE empleado_cliente IS null;
 +-------------+
 ```
 
+11. Calcula la fecha del primer y último pago realizado por cada uno de los clientes. El listado deberá mostrar el nombre y los apellidos de cada cliente.
+
+```sql
+SELECT CONCAT(cliente.nombre_cliente, ' ', cliente.apellido1_cliente, ' ', cliente.apellido2_cliente) AS nombreCliente, MIN(fecha_pago) AS fechaPrimerPago, MAX(fecha_pago) AS fechaUltimoPago
+FROM pago
+LEFT JOIN cliente ON pago.pago_cliente = cliente.id_cliente 
+GROUP BY cliente.id_cliente;
++---------------------------------+-----------------+-----------------+
+| nombreCliente                   | fechaPrimerPago | fechaUltimoPago |
++---------------------------------+-----------------+-----------------+
+| Cliente 1 Apellido 5 Apellido 6 | 2008-05-06      | 2024-05-07      |
+| Cliente 2 Apellido 5 Apellido 6 | 2024-05-06      | 2024-05-06      |
+| NULL                            | 2023-12-26      | 2023-12-26      |
++---------------------------------+-----------------+-----------------+
+```
+
+12. Calcula el número de productos diferentes que hay en cada uno de los pedidos.
+
+```sql
+SELECT COUNT(DISTINCT(producto_pedido)) as productosDiferentes
+FROM detallePedido;
++---------------------+
+| productosDiferentes |
++---------------------+
+|                   2 |
++---------------------+
+```
+
+13. Calcula la suma de la cantidad total de todos los productos que aparecen en cada uno de los pedidos.
+
+```sql
+SELECT pedido.id_pedido, SUM(detallePedido.cantidad) AS cantidadTotal
+FROM pedido
+JOIN detallePedido ON pedido.detalle_pedido = detallePedido.id_detallePedido
+GROUP BY pedido.id_pedido;
++-----------+---------------+
+| id_pedido | cantidadTotal |
++-----------+---------------+
+|         1 |             2 |
+|         2 |             1 |
+|         3 |             1 |
+|         4 |             1 |
+|         5 |             2 |
+|         6 |             1 |
++-----------+---------------+
+```
+
+14. Devuelve un listado de los 20 productos más vendidos y el número total de unidades que se han vendido de cada uno. El listado deberá estar ordenado por el número total de unidades vendidas.
+
+```sql
+SELECT producto.nombre_producto, SUM(detallePedido.cantidad) AS total_unidades_vendidas
+FROM detallePedido
+JOIN producto ON detallePedido.producto_pedido = producto.id_producto
+GROUP BY producto.nombre_producto
+ORDER BY total_unidades_vendidas DESC
+LIMIT 20;
++-----------------+-------------------------+
+| nombre_producto | total_unidades_vendidas |
++-----------------+-------------------------+
+| Producto 1      |                       2 |
+| Producto 2      |                       1 |
++-----------------+-------------------------+
+```
+
+15. La facturación que ha tenido la empresa en toda la historia, indicando la base imponible, el IVA y el total facturado. La base imponible se calcula sumando el coste del producto por el número de unidades vendidas de la tabla detalle_pedido. El IVA es el 21 % de la base imponible, y el total la suma de los dos campos anteriores.
+
+```sql
+
+```
+
+16. La misma información que en la pregunta anterior, pero agrupada por código de producto.
+
+```sql
+
+```
+
+17. La misma información que en la pregunta anterior, pero agrupada por código de producto filtrada por los códigos que empiecen por OR.
+
+```sql
+
+```
+
+18. Lista las ventas totales de los productos que hayan facturado más de 3000 euros. Se mostrará el nombre, unidades vendidas, total facturado y total facturado con impuestos (21% IVA).
+
+```sql
+
+```
+
+19. Muestre la suma total de todos los pagos que se realizaron para cada uno de los años que aparecen en la tabla pagos.
+
+```sql
+SELECT YEAR(fecha_pago) AS añoPago, SUM(transaccion) AS totalPagos
+FROM pago
+GROUP BY YEAR(fecha_pago);
++----------+------------+
+| añoPago  | totalPagos |
++----------+------------+
+|     2024 |    1789012 |
+|     2008 |     789012 |
+|     2009 |     789012 |
+|     2023 |     789012 |
++----------+------------+
+```
+
+
+
 ---
 
 ## Subconsultas
