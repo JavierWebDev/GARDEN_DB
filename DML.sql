@@ -21,7 +21,7 @@ VALUES (1, 100),
 -- Insertar datos en la tabla producto
 INSERT INTO producto (id_producto, nombre_producto, precio_proveedor, precio_ventas, gama_producto, dimensiones_producto, proveedor_producto, stock_producto)
 VALUES ('P001', 'Producto 1', 50.99, 89.99, 'G001', 1, 1, 1),
-       ('P002', 'Producto 2', 35.75, 69.99, 'G002', 2, 2, 2);
+       ('P002', 'Producto 2', 35.75, 69.99, 'G002', 2, 2, 1);
 
 -- Insertar datos en la tabla barrio
 INSERT INTO barrio (id_barrio, nombre_barrio)
@@ -89,9 +89,9 @@ VALUES (1, 'Puesto 1'),
 
 -- Insertar datos en la tabla empleado
 INSERT INTO empleado (id_empleado, nombre_empleado, apellido1_empleado, apellido2_empleado, extension_empleado, email_empleado, oficina_empleado, puesto_empleado, jefe_empleado)
-VALUES (1, 'Empleado 1', 'Apellido 1', 'Apellido 2', 'Extensión 1', 'empleado1@example.com', 1, 1, 7),
+VALUES (1, 'Empleado 1', 'Apellido 1', 'Apellido 2', 'Extensión 1', 'empleado1@example.com', 1, 1, 3),
        (2, 'Empleado 2', 'Apellido 3', 'Apellido 4', 'Extensión 2', 'empleado2@example.com', 2, 2, 8),
-       (3, 'JEFEEEEE', 'Apellido 1', 'Apellido 2', 'Extensión 3', 'jefe@example.com', 2, 3, null),
+       (3, 'Alberto', 'Soria', 'Apellido 2', 'Extensión 3', 'jefe@example.com', 2, 3, null),
        (4, 'Juan', 'Lopez', 'Gomez', 'Extensión 4', 'empleado3@example.com', 3, 3, null);
 
 -- Insertar datos en la tabla cliente
@@ -99,7 +99,7 @@ INSERT INTO cliente (id_cliente, nombre_cliente, apellido1_cliente, apellido2_cl
 VALUES (1, 'Cliente 1', 'Apellido 5', 'Apellido 6', 1, 1, 1, 1, 1, 1, 2, 1),
        (2, 'Cliente 2', 'Apellido 5', 'Apellido 6', 1, 1, 1, 1, 1, 1, 2, 4),
        (3, 'Roberto', 'Zuluaga', 'Garcia', 2, 2, 2, 2, 3, 2, 1, 2),
-       (5, 'Carlos', 'Rodriguez', 'Torres', 2, 2, 2, 2, 3, 2, 1, null);
+       (4, 'Carlos', 'Rodriguez', 'Torres', 2, 2, 2, 2, 3, 2, 1, null);
 
 -- Insertar datos en la tabla forma_pago
 INSERT INTO forma_pago (id_forma_pago, nombre_forma_pago)
@@ -111,7 +111,7 @@ INSERT INTO pago (id_pago, transaccion, forma_pago_pago, fecha_pago, pago_client
 VALUES (1, 1000000, 1, '2024-05-07', 1),
        (2, 789012, 2, '2024-05-06', 2),
        (3, 789012, 2, '2008-05-06', 1),
-       (4, 789012, 2, '2009-05-06', 1),
+       (4, 10000000, 2, '2009-05-06', 5),
        (5, 789012, 2, '2023-12-26', NULL);
 
 -- Insertar datos en la tabla estado
@@ -134,3 +134,4 @@ VALUES (1, '2024-01-07', '2024-05-10', NULL, 'Comentario 1', 1, 2, 1),
        (4, '2024-08-06', '2024-05-09', '2024-05-8', 'Comentario 4', 2, 2, 2),
        (5, '2009-05-06', '2024-05-09', NULL, 'Comentario 5', 1, 1, 4),
        (6, '2012-11-13', '2012-11-13', NULL, 'Comentario 6', 2, NULL, 4);
+

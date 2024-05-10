@@ -215,3 +215,4 @@ create table pedido(
   constraint FK_estado_pedido foreign key  (estado_pedido) references estado(id_estado),
   constraint FK_cliente_pedido foreign key  (cliente_pedido) references cliente(id_cliente)
 );
+

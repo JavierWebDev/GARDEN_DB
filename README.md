@@ -722,3 +722,114 @@ WHERE stock_producto = (
 +-----------------+
 ```
 
+5. Devuelve el nombre, los apellidos y el email de los empleados que están a cargo de Alberto Soria.
+
+```sql
+SELECT nombre_empleado, apellido1_empleado, apellido2_empleado, email_empleado
+FROM empleado
+WHERE jefe_empleado = (
+  SELECT id_empleado
+  FROM empleado
+  WHERE nombre_empleado = 'Alberto' AND apellido1_empleado = 'Soria'
+);
++-----------------+--------------------+--------------------+-----------------------+
+| nombre_empleado | apellido1_empleado | apellido2_empleado | email_empleado        |
++-----------------+--------------------+--------------------+-----------------------+
+| Empleado 1      | Apellido 1         | Apellido 2         | empleado1@example.com |
++-----------------+--------------------+--------------------+-----------------------+
+```
+
+---
+
+### Subconsultas con ALL y ANY
+
+1. Devuelve el nombre del cliente con la mayor transaccion.
+
+```sql
+SELECT c.nombre_cliente
+FROM cliente AS c
+JOIN pago ON c.id_cliente = pago.pago_cliente
+WHERE pago.transaccion = (
+  SELECT MAX(transaccion)
+  FROM pago
+);
++----------------+
+| nombre_cliente |
++----------------+
+| Carlos         |
++----------------+
+```
+
+2. Devuelve el nombre del producto que tenga el precio de venta más caro.
+
+```sql
+SELECT nombre_producto
+FROM producto
+WHERE precio_ventas >= ALL (
+  SELECT precio_ventas
+  FROM producto
+);
++-----------------+
+| nombre_producto |
++-----------------+
+| Producto 1      |
++-----------------+
+```
+
+3. Devuelve el producto que menos unidades tiene en stock.
+
+```sql
+SELECT nombre_producto
+FROM producto
+WHERE stock_producto <= ALL (
+    SELECT stock
+    FROM stock
+);
+```
+
+---
+
+## Procedimientos Almacenados
+
+1. Lista el ID de los clientes y el nombre completo de cada cliente
+
+```sql
+DELIMITER //
+CREATE PROCEDURE getClients()
+BEGIN
+
+	SELECT id_cliente as ID, CONCAT(nombre_cliente, ' ', apellido1_cliente, ' ', apellido2_cliente) AS nombreCliente 
+	FROM cliente;
+	
+END//
+
+CALL getClients();
++----+---------------------------------+
+| ID | nombreCliente                   |
++----+---------------------------------+
+|  1 | Cliente 1 Apellido 5 Apellido 6 |
+|  2 | Cliente 2 Apellido 5 Apellido 6 |
+|  3 | Roberto Zuluaga Garcia          |
+|  5 | Carlos Rodriguez Torres         |
++----+---------------------------------+
+```
+
+2. Eliminar un cliente de la base de datos
+
+```sql
+DELIMITER //
+
+CREATE PROCEDURE delClient(IN id_eliminarCliente INT)
+BEGIN
+    DELETE FROM pago
+    WHERE pago_cliente = id_eliminarCliente;
+
+    DELETE FROM cliente
+    WHERE id_cliente = id_eliminarCliente;
+
+END//
+
+CALL delClient(5);
+```
+
+3. 
