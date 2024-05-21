@@ -1,3 +1,5 @@
+
+
 -- Insertar datos en la tabla gama_producto
 INSERT INTO gama_producto (id_gama, descripcion, descripcion_html, imagen)
 VALUES ('G001', 'Gama 1', '<b>Gama 1</b>', 'imagen1.jpg'),
@@ -127,10 +129,10 @@ VALUES (1, 'P001', 2, 50.99, 'NL001'),
        (2, 'P002', 1, 35.75, 'NL002');
 
 -- Insertar datos en la tabla pedido
-INSERT INTO pedido (id_pedido, fecha_pedido, fecha_esperada, fecha_entrega, comentarios, detalle_pedido, cliente_pedido, estado_pedido)
+INSERT INTO pedido (id_pedido, fecha_pedido, fecha_esperada, fecha_entrega, comentarios, cliente_pedido, estado_pedido, detalle_pedido)
 VALUES (1, '2024-01-07', '2024-05-10', NULL, 'Comentario 1', 1, 2, 1),
        (2, '2024-01-06', '2024-05-09', NULL, 'Comentario 2', 2, 1, 2),
-       (3, '2024-05-06', '2024-05-09', '2024-05-10', 'Comentario 3', 2, 2, 2),
+       (3, '2024-05-06', '2024-05-09', '2024-05-10', 'Comentario 3', 1, 2, 2),
        (4, '2024-08-06', '2024-05-09', '2024-05-8', 'Comentario 4', 2, 2, 2),
-       (5, '2009-05-06', '2024-05-09', NULL, 'Comentario 5', 1, 1, 4),
-       (6, '2012-11-13', '2012-11-13', NULL, 'Comentario 6', 2, NULL, 4);
+       (5, '2009-05-06', '2024-05-09', NULL, 'Comentario 5', 4, 1, 1),
+       (6, '2012-11-13', '2012-11-13', NULL, 'Comentario 6', 2, 2, 1);
