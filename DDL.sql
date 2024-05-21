@@ -1,3 +1,7 @@
+CREATE DATABASE garden_database;
+
+use garden_database;
+
 -- Tabla para clasificación de productos
 create table gama_producto(
   id_gama varchar(50) primary key,
@@ -209,10 +213,10 @@ create table pedido(
  fecha_esperada date,
  fecha_entrega date,
  comentarios text,
- detalle_pedido int(11) not null,
  cliente_pedido int(11),
  estado_pedido int(11) not null,
+ detalle_pedido int(11) not null,
   constraint FK_estado_pedido foreign key  (estado_pedido) references estado(id_estado),
-  constraint FK_cliente_pedido foreign key  (cliente_pedido) references cliente(id_cliente)
+  constraint FK_cliente_pedido foreign key  (cliente_pedido) references cliente(id_cliente),
+  constraint FK_detalle_pedido foreign key  (detalle_pedido) references detallePedido(id_detallePedido)
 );
-
